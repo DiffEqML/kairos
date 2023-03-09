@@ -1,0 +1,43 @@
+# @package _global_
+defaults:
+  - override /trainer: default 
+  - override /model: dfpnet
+  - override /datamodule: dfpfull
+  - override /callbacks: [log_recons_metrics, default]
+  - override /metrics: [relativel1]
+  - override /logger: wandb
+  - override /task: default
+
+seed: 420
+
+model:
+  res : 128
+  in_channels : 3
+  out_channels : 3
+  channel_exponent : 6
+  in_place_relu : False # see bug # 1 in NOTICE.md
+
+trainer:
+  accelerator: gpu
+  devices: 1
+  num_nodes: 1
+  max_epochs: 400
+
+datamodule:
+  data_dir: /your/path/here
+  dataset_size: 30000 # max size
+  batch_size: 64
+  
+train:
+  optimizer:
+    _target_: torch.optim.AdamW
+    lr: 3e-3
+    weight_decay: 1e-4
+  scheduler:
+    _target_: torch.optim.lr_scheduler.StepLR
+    step_size: 100
+    gamma: 0.6
+  scheduler_interval: epoch
+  loss_fn:
+    _target_: src.losses.relative.RelativeL2
+

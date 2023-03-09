@@ -1,0 +1,2 @@
+smape_at_index:
+  _target_: src.metrics.timeseries_metrics.SMAPEatIndex

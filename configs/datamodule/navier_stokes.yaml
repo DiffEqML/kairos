@@ -1,0 +1,6 @@
+_target_: src.datamodules.basic_pde.NavierStokes
+data_dir: ${oc.env:DATA_DIR,${data_dir}}/  # data_dir is specified in config.yaml
+ntrain: 4000
+target_time: 40
+shuffle: True
+__train_len: ${.ntrain}

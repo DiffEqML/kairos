@@ -1,0 +1,59 @@
+# @package _global_
+defaults:
+  - override /trainer: default # choose trainer from 'configs/trainer/'
+  - override /model: t1u_2d
+  - override /datamodule: navier_stokes
+  - override /optimizer: adamw
+  - override /scheduler: step
+  - override /callbacks: default
+  - override /metrics: [mse]
+  - override /logger: wandb
+
+seed: 4444
+
+model:
+  modes: 24
+  channel_exponent: 5
+  keep_high: False
+  perform_inverse: False
+  residual: True
+  weight_init: 2
+  act: "gelu"
+  use_operator_layer: True
+  signal_resolution: [64, 64]
+  transform: "dct"
+
+trainer:
+  accelerator: gpu
+  devices: 1
+  num_nodes: 1
+  max_epochs: 500
+
+datamodule:
+  batch_size: 64
+  subsampling_rate: 1
+  ntest: 200
+  ntrain: 1000
+  target_time: 50
+  viscosity: 1e-3
+  data_dir: /your/path/here
+
+train:
+  optimizer:
+    lr:  1e-3
+    weight_decay: 1e-4
+  scheduler:
+    step_size: 100
+    gamma: 0.5
+  scheduler_interval: epoch
+  loss_fn: 
+    _target_: src.losses.relative_l2.RelativeL2DCT
+
+callbacks:
+  model_checkpoint: null
+  early_stopping: null
+
+logger:
+  wandb:
+    project: navier-stokes
+    name: T1U

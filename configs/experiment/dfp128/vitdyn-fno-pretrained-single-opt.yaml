@@ -1,0 +1,52 @@
+# @package _global_
+defaults:
+  - override /trainer: default # choose trainer from 'configs/trainer/'
+  - override /model: vitdyn-fno
+  - override /datamodule: dfpfull
+  - override /callbacks: [default, log_recons_metrics, logact_vitdyn]
+  - override /metrics: [relativel1]
+  - override /logger: wandb
+  - override /task: default
+
+seed: 420
+
+model:
+  pretrained: True
+  modes1: 24
+  modes2: ${.modes1}
+  width: 32
+  padding: 9
+  nlayers: 4
+  in_channels : 3
+  out_channels : 3
+
+trainer:
+  accelerator: gpu
+  devices: 1
+  num_nodes: 1
+  max_epochs: 300
+
+datamodule:
+  dataset_size: 30000 # max size
+  batch_size: 32
+  res : 224 
+  preprocess : True
+  
+train:
+  optimizer:
+    _target_: torch.optim.AdamW
+    lr: 1e-3
+    weight_decay: 1e-3
+  scheduler:
+    _target_: torch.optim.lr_scheduler.StepLR
+    step_size: 50
+    gamma: 0.6
+  scheduler_interval: step
+  loss_fn:
+    _target_: src.losses.relative.RelativeL2
+
+
+callbacks:
+  model_checkpoint: null
+  early_stopping: null
+

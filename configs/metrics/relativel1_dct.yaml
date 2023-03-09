@@ -1,0 +1,2 @@
+relativel1_dct:
+  _target_: src.metrics.relative.MeanAbsolutePercentageErrorDCT

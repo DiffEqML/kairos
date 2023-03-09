@@ -1,0 +1,59 @@
+# @package _global_
+defaults:
+  - override /trainer: default 
+  - override /model: t1u_2d
+  - override /datamodule: dfpfull
+  - override /callbacks: [log_recons_metrics, default]
+  - override /metrics: [relativel1]
+  - override /logger: wandb
+  - override /task: default
+
+seed: 420
+
+callbacks:
+  early_stopping: null
+  log_recons_metrics:
+    forward_transform_on_preds: None
+
+model:
+  modes: 100
+  channel_exponent: 6
+  keep_high: False
+  perform_inverse: False
+  use_band_complement: False
+  residual: True
+  weight_init: 2
+  act: "gelu"
+  use_band_complement: True
+  use_operator_layer: True
+  signal_resolution: [128, 128]
+  transform: "dct"
+  in_channels: 3
+  out_channels: 3
+
+
+trainer:
+  accelerator: gpu
+  devices: 1
+  num_nodes: 1
+  max_epochs: 400
+
+datamodule:
+  data_dir: /data
+  dataset_size: 2000 # max size
+  batch_size: 64
+  
+train:
+  optimizer:
+    _target_: torch.optim.AdamW
+    lr: 1e-3
+    weight_decay: 0
+  scheduler:
+    _target_: torch.optim.lr_scheduler.StepLR
+    step_size: 50
+    gamma: 0.6
+  scheduler_interval: epoch
+  loss_fn:
+    _target_: src.losses.relative.RelativeL2
+
+

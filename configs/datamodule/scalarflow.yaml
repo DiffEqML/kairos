@@ -1,0 +1,3 @@
+_target_: src.datamodules.scalarflow.ScalarFlow
+data_dir: /datasets/scalarflow/m1521788/scalarflow_preprocessed # NOTE: manually for now ${oc.env:DATA_DIR,${data_dir}}/scalarflow_images/  # data_dir is specified in config.yaml
+shuffle: True

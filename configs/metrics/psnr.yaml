@@ -1,0 +1,2 @@
+psnr:
+  _target_: torchmetrics.PeakSignalNoiseRatio

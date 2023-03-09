@@ -1,0 +1,2 @@
+direct-nll:
+  _target_: src.losses.generation.DirectNLL

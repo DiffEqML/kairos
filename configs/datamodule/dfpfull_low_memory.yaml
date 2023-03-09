@@ -1,0 +1,5 @@
+_target_: src.datamodules.dfp.DFPFullOnline # we use the same DFP512 sampling to get the data
+# data_dir: ${oc.env:DATA_DIR,${data_dir}}/dfpfull/low_memory  # data_dir is specified in config.yaml
+data_dir: /datasets/dfpfull/low_memory  # data_dir is specified in config.yaml
+shuffle: True
+is_preprocessed: True

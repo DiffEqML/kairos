@@ -1,0 +1,18 @@
+python-dotenv
+pytorch-lightning
+hydra-core
+hydra-colorlog
+hydra-optuna-sweeper
+omegaconf
+matplotlib
+rich
+timm
+einops
+datasets
+gdown
+wandb
+more-itertools
+lightning-bolts
+mat73
+
+ipykernel # notebooks

@@ -1,0 +1,46 @@
+# @package _global_
+defaults:
+  - override /trainer: default 
+  - override /model: ffno
+  - override /datamodule: dfpfull_low_memory
+  - override /callbacks: [log_recons_metrics, default]
+  - override /metrics: [relativel1]
+  - override /logger: wandb
+  - override /task: default
+
+seed: 420
+
+model:
+  modes: 24
+  width: 64
+  n_layers: 12 
+  input_dim: 3 
+
+
+trainer:
+  accelerator: gpu
+  devices: 1
+  num_nodes: 1
+  max_epochs: 400
+
+datamodule:
+  data_dir: /data
+  dataset_size: 2000 # max size
+  batch_size: 64
+  
+train:
+  optimizer:
+    _target_: torch.optim.AdamW
+    lr: 1e-3
+    weight_decay: 1e-4
+  scheduler:
+    _target_: torch.optim.lr_scheduler.StepLR
+    step_size: 50
+    gamma: 0.6
+  scheduler_interval: epoch
+  loss_fn:
+    _target_: src.losses.relative.RelativeL2
+
+callbacks:
+  early_stopping: null
+
